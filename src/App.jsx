@@ -3,6 +3,7 @@ import GridLayout from "react-grid-layout";
 import gsap from "gsap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import Form from 'react-bootstrap/Form';
 import "./App.css";
 
 const initialLayout = [
@@ -167,42 +168,52 @@ function App() {
             <Modal.Title>Add layout component</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <label htmlFor="title">Title</label>
-            <input
+          <Form>
+               <Form.Group className="mb-3">
+            <Form.Label htmlFor="title">Title</Form.Label>
+            <Form.Control
               type="text"
               name="title"
               id="title"
               value={formData?.title || ""}
               onChange={handleChange}
+              placeholder="Enter title"
             />
-            <label htmlFor="description">description</label>
-            <textarea
+            <Form.Label htmlFor="description">description</Form.Label>
+            <Form.Control
+              as="textarea" 
+              rows={3}
               id="description"
               name="description"
               value={formData?.description || ""}
               onChange={handleChange}
+              placeholder="Enter description"
             />
-            <label htmlFor="short_code">Short code</label>
-            <input
+            <Form.Label htmlFor="short_code">Short code</Form.Label>
+            <Form.Control
               type="text"
               name="short_code"
               id="short_code"
               value={formData?.short_code || ""}
               onChange={handleChange}
+              placeholder="Enter short code"
             />
-            <label htmlFor="image1">Enter the image url</label>
-            <input
+            <Form.Label htmlFor="image1">Enter the image url</Form.Label>
+            <Form.Control
               type="string"
               name="image1"
               id="image1"
               className="border-black border-2"
               value={formData?.image1 || ""}
               onChange={handleChange}
+              placeholder="Enter image url"
             />
-            <div className="flex justify-center">----- or -----</div>
-            <label htmlFor="image2">Upload image</label>
+            <div className="flex justify-center"> <Form.Text className="flex justify-center" id="passwordHelpBlock" muted>
+       --------or---------
+      </Form.Text></div>
+            <Form.Label htmlFor="image2">Upload image</Form.Label>
 
-            <input
+            <Form.Control
               type="file"
               name="image2"
               id="image2"
@@ -211,6 +222,8 @@ function App() {
               accept="image/*"
               className="border-black border-2"
             />
+             </Form.Group>
+            </Form>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
