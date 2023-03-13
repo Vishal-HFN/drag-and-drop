@@ -3,7 +3,7 @@ import GridLayout from "react-grid-layout";
 import gsap from "gsap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import Form from 'react-bootstrap/Form';
+import Form from "react-bootstrap/Form";
 import "./App.css";
 
 const initialLayout = [
@@ -43,13 +43,28 @@ function App() {
     setShow(id);
   };
   const handleSubmit = () => {
-    if (formData?.image) {
-      const image = <img src={formData.image} alt={renderer} />;
+    if (formData?.image1 || formData?.image2) {
+      const image = (
+        <img src={formData?.image1 || formData?.image2} alt={renderer} />
+      );
+      const divParent = (
+        <div className="w-full h-full relative">
+          {image}
+          <div className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+            {formData?.title ? <h1>{formData?.title}</h1> : ""}
+            {formData?.description ? <p>{formData?.description}</p> : ""}
+            {formData?.short_code ? <div>{formData?.short_code}</div> : ""}
+          </div>
+        </div>
+      );
       setLayout((prev) =>
-        prev.map((item) => (item.i === show ? { ...item, comp: image } : item))
+        prev.map((item) =>
+          item.i === show ? { ...item, comp: divParent } : item
+        )
       );
     }
     handleClose();
+    setFormData({});
   };
 
   const handleChange = (e) => {
@@ -67,7 +82,7 @@ function App() {
   const handleImage = async (e) => {
     const file = e.target.files[0];
     await getBase64(file).then((base64) => {
-      setFormData((prev) => ({ ...prev, image: base64 }));
+      setFormData((prev) => ({ ...prev, [e.target.name]: base64 }));
     });
   };
 
@@ -168,61 +183,67 @@ function App() {
             <Modal.Title>Add layout component</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <Form>
-               <Form.Group className="mb-3">
-            <Form.Label htmlFor="title">Title</Form.Label>
-            <Form.Control
-              type="text"
-              name="title"
-              id="title"
-              value={formData?.title || ""}
-              onChange={handleChange}
-              placeholder="Enter title"
-            />
-            <Form.Label htmlFor="description">description</Form.Label>
-            <Form.Control
-              as="textarea" 
-              rows={3}
-              id="description"
-              name="description"
-              value={formData?.description || ""}
-              onChange={handleChange}
-              placeholder="Enter description"
-            />
-            <Form.Label htmlFor="short_code">Short code</Form.Label>
-            <Form.Control
-              type="text"
-              name="short_code"
-              id="short_code"
-              value={formData?.short_code || ""}
-              onChange={handleChange}
-              placeholder="Enter short code"
-            />
-            <Form.Label htmlFor="image1">Enter the image url</Form.Label>
-            <Form.Control
-              type="string"
-              name="image1"
-              id="image1"
-              className="border-black border-2"
-              value={formData?.image1 || ""}
-              onChange={handleChange}
-              placeholder="Enter image url"
-            />
-            <div className="flex justify-center"> <Form.Text className="flex justify-center" id="passwordHelpBlock" muted>
-       --------or---------
-      </Form.Text></div>
-            <Form.Label htmlFor="image2">Upload image</Form.Label>
+            <Form>
+              <Form.Group className="mb-3">
+                <Form.Label htmlFor="title">Title</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="title"
+                  id="title"
+                  value={formData?.title || ""}
+                  onChange={handleChange}
+                  placeholder="Enter title"
+                />
+                <Form.Label htmlFor="description">description</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={3}
+                  id="description"
+                  name="description"
+                  value={formData?.description || ""}
+                  onChange={handleChange}
+                  placeholder="Enter description"
+                />
+                <Form.Label htmlFor="short_code">Short code</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="short_code"
+                  id="short_code"
+                  value={formData?.short_code || ""}
+                  onChange={handleChange}
+                  placeholder="Enter short code"
+                />
+                <Form.Label htmlFor="image1">Enter the image url</Form.Label>
+                <Form.Control
+                  type="string"
+                  name="image1"
+                  id="image1"
+                  className="border-black border-2"
+                  value={formData?.image1 || ""}
+                  onChange={handleChange}
+                  placeholder="Enter image url"
+                />
+                <div className="flex justify-center">
+                  {" "}
+                  <Form.Text
+                    className="flex justify-center"
+                    id="passwordHelpBlock"
+                    muted
+                  >
+                    --------or---------
+                  </Form.Text>
+                </div>
+                <Form.Label htmlFor="image2">Upload image</Form.Label>
 
-            <Form.Control
-              type="file"
-              name="image2"
-              id="image2"
-              value={formData?.image2 || ""}
-              onChange={handleImage}
-              accept="image/*"
-              className="border-black border-2"
-            />
-             </Form.Group>
+                <Form.Control
+                  type="file"
+                  name="image2"
+                  id="image2"
+                  onChange={handleImage}
+                  accept="image/*"
+                  className="border-black border-2"
+                />
+              </Form.Group>
             </Form>
           </Modal.Body>
           <Modal.Footer>
