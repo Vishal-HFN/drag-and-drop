@@ -42,13 +42,28 @@ function App() {
     setShow(id);
   };
   const handleSubmit = () => {
-    if (formData?.image) {
-      const image = <img src={formData.image} alt={renderer} />;
+    if (formData?.image1 || formData?.image2) {
+      const image = (
+        <img src={formData?.image1 || formData?.image2} alt={renderer} />
+      );
+      const divParent = (
+        <div className="w-full h-full relative">
+          {image}
+          <div className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+            {formData?.title ? <h1>{formData?.title}</h1> : ""}
+            {formData?.description ? <p>{formData?.description}</p> : ""}
+            {formData?.short_code ? <div>{formData?.short_code}</div> : ""}
+          </div>
+        </div>
+      );
       setLayout((prev) =>
-        prev.map((item) => (item.i === show ? { ...item, comp: image } : item))
+        prev.map((item) =>
+          item.i === show ? { ...item, comp: divParent } : item
+        )
       );
     }
     handleClose();
+    setFormData({});
   };
 
   const handleChange = (e) => {
@@ -66,7 +81,7 @@ function App() {
   const handleImage = async (e) => {
     const file = e.target.files[0];
     await getBase64(file).then((base64) => {
-      setFormData((prev) => ({ ...prev, image: base64 }));
+      setFormData((prev) => ({ ...prev, [e.target.name]: base64 }));
     });
   };
 
@@ -196,8 +211,7 @@ function App() {
               name="image1"
               id="image1"
               className="border-black border-2"
-              value={formData?.image1 || ""}
-              onChange={handleChange}
+              onChange={handleImage}
             />
             <div className="flex justify-center">----- or -----</div>
             <label htmlFor="image2">Upload image</label>
@@ -206,7 +220,6 @@ function App() {
               type="file"
               name="image2"
               id="image2"
-              value={formData?.image2 || ""}
               onChange={handleImage}
               accept="image/*"
               className="border-black border-2"
