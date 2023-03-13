@@ -51,6 +51,10 @@ function App() {
     handleClose();
   };
 
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
   const getBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -164,20 +168,36 @@ function App() {
           </Modal.Header>
           <Modal.Body>
             <label htmlFor="title">Title</label>
-            <input type="text" name="title" id="title" />
+            <input
+              type="text"
+              name="title"
+              id="title"
+              value={formData?.title || ""}
+              onChange={handleChange}
+            />
             <label htmlFor="description">description</label>
-            <textarea name="" id="description" />
-            <label htmlFor="description">Description</label>
-            <input type="text" name="description" id="description" />
+            <textarea
+              id="description"
+              name="description"
+              value={formData?.description || ""}
+              onChange={handleChange}
+            />
+            <label htmlFor="short_code">Short code</label>
+            <input
+              type="text"
+              name="short_code"
+              id="short_code"
+              value={formData?.short_code || ""}
+              onChange={handleChange}
+            />
             <label htmlFor="image1">Enter the image url</label>
             <input
               type="string"
-              name="image"
+              name="image1"
               id="image1"
               className="border-black border-2"
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, image: e.target.value }))
-              }
+              value={formData?.image1 || ""}
+              onChange={handleChange}
             />
             <div className="flex justify-center">----- or -----</div>
             <label htmlFor="image2">Upload image</label>
@@ -186,6 +206,7 @@ function App() {
               type="file"
               name="image2"
               id="image2"
+              value={formData?.image2 || ""}
               onChange={handleImage}
               accept="image/*"
               className="border-black border-2"
